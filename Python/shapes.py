@@ -60,8 +60,13 @@ class drawingBoard:
 
 
     def createShape(self, event):
+        """
         size = self.size_button.get()
         color = self.color_button.get()
+        """
+        size = self.DEFAULT_SIZE
+        color = self.DEFAULT_COLOR
+
 
         if self.active_button == self.rec_button:
             x0, y0 = event.x, event.y
@@ -91,6 +96,7 @@ class drawingBoard:
         self.rec_button.bind("<Button-1>", self.build_rec())
         self.circle_button.bind("<Button-1>", self.build_circle())
         self.active_button = self.rec_button
+        self.can.bind("<Button-1>", self.createShape)
 
     def activate_button(self, some_button):
         self.active_button.config(relief=tk.RAISED)
