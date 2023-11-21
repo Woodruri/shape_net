@@ -14,7 +14,14 @@ class shape:
 
 
 class drawingBoard:
-    def __init__(self,root):
+
+    DEFAULT_COLOR = 'black'
+    DEFAULT_SIZE = 25
+    COLUMN_NO = 4
+
+    def __init__(self):
+
+        #Root is our base window
         self.root = tk.Tk()
         self.root.title = "Drawing Board Networking App"
 
@@ -28,7 +35,7 @@ class drawingBoard:
         self.circle_button.grid(row=0, column=1)
 
         #size
-        self.size_button = tk.Entry(self.root, text='Size.', command=self.pick_size)
+        self.size_button = tk.Entry(self.root, text='Size.')
         self.size_button.grid(row=0, column=2)
 
         #color
@@ -36,14 +43,15 @@ class drawingBoard:
         self.color_button.grid(row=0, column=3)
 
         #build the canvas
-        self.canvas = tk.Canvas(root, width=800, height=800, bg='white')
-        self.canvas.pack()
+        self.can = tk.Canvas(self.root, width=800, height=800, bg='white')
+        self.can.grid(row=0, column = self.COLUMN_NO)
+
+        self.setup()
+        self.root.mainloop()
 
         #our temp shape var to create current shapes
         temp = shape()
 
-        #binding events
-        self.canvas.bind('<Button-1>', self.createShape)
 
     def createShape(self, shape):
         pass
@@ -51,6 +59,20 @@ class drawingBoard:
     def addToJSON(self, shape):
         pass
 
+    def build_rec(self):
+        pass
+
+    def build_circle(self):
+        pass
+
+    def pick_size(self):
+        pass
+    
+    def setup(self):
+        #binding events
+        self.can.bind('<Button-1>', self.createShape)
+        pass
+
 
 if __name__ == "__main__":
-    drawingBoard(tk.Tk())
+    drawingBoard()
