@@ -1,4 +1,5 @@
 import tkinter as tk
+import json as js
 
 class shape:
 
@@ -23,16 +24,20 @@ class drawingBoard:
 
         #Root is our base window
         self.root = tk.Tk()
-        self.root.title = "Drawing Board Networking App"
+        self.root.title("Drawing Board Networking App")
 
         #create buttons
         #rectangle
+        
         self.rec_button = tk.Button(self.root, text='Rect.', command=self.build_rec)
         self.rec_button.grid(row=0, column=0)
 
         #circle
         self.circle_button = tk.Button(self.root, text='Circle.', command=self.build_circle)
         self.circle_button.grid(row=0, column=1)
+
+        self.active_button = self.rec_button
+        self.activate_button(self.rec_button)
 
         #size
         self.size_button = tk.Entry(self.root, text='Size.')
@@ -44,8 +49,9 @@ class drawingBoard:
 
         #build the canvas
         self.can = tk.Canvas(self.root, width=800, height=800, bg='white')
-        self.can.grid(row=0, column = self.COLUMN_NO)
+        self.can.grid(row=1, columnspan = self.COLUMN_NO)
 
+        #setup and loop stuff
         self.setup()
         self.root.mainloop()
 
@@ -53,25 +59,43 @@ class drawingBoard:
         temp = shape()
 
 
-    def createShape(self, shape):
-        pass
+    def createShape(self, event):
+        size = self.size_button.get()
+        color = self.color_button.get()
 
-    def addToJSON(self, shape):
+        if self.active_button == self.rec_button:
+            x0, y0 = event.x, event.y
+            x1, y1 = x0 + int(size), y0 + int(size)
+            self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
+        elif self.active_button == self.circle_button:
+            x, y, r = event.x, event.y, int(size)
+            self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
+        
+        self.addToJSON()
+
+    def addToJSON(self):
         pass
+        #needs to be able to add each shape to the JSON file
 
     def build_rec(self):
-        pass
+        self.activate_button(self.rec_button)
 
     def build_circle(self):
-        pass
+        self.activate_button(self.circle_button)
 
     def pick_size(self):
         pass
     
     def setup(self):
         #binding events
-        self.can.bind('<Button-1>', self.createShape)
-        pass
+        self.rec_button.bind("<Button-1>", self.build_rec())
+        self.circle_button.bind("<Button-1>", self.build_circle())
+        self.active_button = self.rec_button
+
+    def activate_button(self, some_button):
+        self.active_button.config(relief=tk.RAISED)
+        some_button.config(relief=tk.SUNKEN)
+        self.active_button = some_button
 
 
 if __name__ == "__main__":
