@@ -12,7 +12,17 @@ class shape:
     def __str__(self):
         return f'{self.shape},{self.size},{self.color},{self.loc}'
 
-
+#class to convert shape object to json serializable
+class shapeEncoder(js.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, shape):
+            return {
+                "shape": obj.shape,
+                "size": obj.size,
+                "color": obj.color,
+                "location": obj.loc
+            }
+        return js.JSONEncoder.default(self, obj)
 
 class drawingBoard:
 
@@ -51,12 +61,12 @@ class drawingBoard:
         self.can = tk.Canvas(self.root, width=800, height=800, bg='white')
         self.can.grid(row=1, columnspan = self.COLUMN_NO)
 
+        #create array to store shapes being "drawn" on canvas
+        self.shapes = []
+
         #setup and loop stuff
         self.setup()
         self.root.mainloop()
-
-        #our temp shape var to create current shapes
-        temp = shape()
 
 
     def createShape(self, event):
@@ -72,15 +82,24 @@ class drawingBoard:
             x0, y0 = event.x, event.y
             x1, y1 = x0 + int(size), y0 + int(size)
             self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
+            new_shape = shape("rectangle", size, color, (x0, y0))
+            self.addToJSON(new_shape)
         elif self.active_button == self.circle_button:
             x, y, r = event.x, event.y, int(size)
             self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
+            new_shape = shape("circle", size, color, (x, y))
+            self.addToJSON(new_shape)
         
-        self.addToJSON()
 
-    def addToJSON(self):
-        pass
+    def addToJSON(self, shape):
         #needs to be able to add each shape to the JSON file
+        try:
+            with open('shapes.json', 'w') as file:
+                shape_to_write = js.dumps(shape, cls=shapeEncoder, indent=4)
+                file.write(js.dump(shape_to_write, file))
+                file.close()
+        except FileNotFoundError:
+            data = []
 
     def build_rec(self):
         self.activate_button(self.rec_button)
@@ -94,14 +113,31 @@ class drawingBoard:
     def setup(self):
         #binding events
         self.active_button = self.rec_button
-        self.rec_button.bind("<Button-1>", self.build_rec())
-        self.circle_button.bind("<Button-1>", self.build_circle())
+        self.rec_button.bind("<Button-1>", self.build_rec)
+        self.circle_button.bind("<Button-1>", self.build_circle)
         self.can.bind("<Button-1>", self.createShape)
 
     def activate_button(self, some_button):
         self.active_button.config(relief=tk.RAISED)
         some_button.config(relief=tk.SUNKEN)
         self.active_button = some_button
+
+    def save_to_json(self):
+        with open('shapes.json', 'w') as file:
+            js.dump([vars(shape) for shape in self.shapes], file)
+
+"""
+    def load_from_json(self):
+        try:
+            with open('shapes.json', 'r') as file:
+                data = js.load(file)
+                self.shapes = [Shape(**shape_data) for shape_data in data]
+                self.redraw_canvas()
+        except FileNotFoundError:
+            print("JSON file not found.")
+
+"""
+
 
 
 if __name__ == "__main__":
