@@ -93,9 +93,9 @@ class drawingBoard:
     
     def setup(self):
         #binding events
+        self.active_button = self.rec_button
         self.rec_button.bind("<Button-1>", self.build_rec())
         self.circle_button.bind("<Button-1>", self.build_circle())
-        self.active_button = self.rec_button
         self.can.bind("<Button-1>", self.createShape)
 
     def activate_button(self, some_button):
