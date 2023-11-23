@@ -1,1 +1,479 @@
-"{\n    \"shape\": \"rectangle\",\n    \"size\": 25,\n    \"color\": \"black\",\n    \"location\": [\n        221,\n        249\n    ]\n}"
+[
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            448,
+            258
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            509,
+            373
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            243,
+            285
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            416,
+            160
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            326,
+            503
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            237,
+            171
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            371,
+            241
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            128,
+            186
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            184,
+            83
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            122,
+            79
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            190,
+            257
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            311,
+            142
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            498,
+            141
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            209,
+            129
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            168,
+            113
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            468,
+            220
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            210,
+            199
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            356,
+            78
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            79,
+            121
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            273,
+            125
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            355,
+            257
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            180,
+            309
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            177,
+            137
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            348,
+            173
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            181,
+            275
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            538,
+            145
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            159,
+            85
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            296,
+            96
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            121,
+            185
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            259,
+            213
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            388,
+            162
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            54,
+            98
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            283,
+            339
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            165,
+            340
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            130,
+            286
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            223,
+            171
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            253,
+            51
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            183,
+            111
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            336,
+            134
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            82,
+            159
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            405,
+            87
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            155,
+            188
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            288,
+            209
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            87,
+            291
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            264,
+            59
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            132,
+            55
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            311,
+            309
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            175,
+            113
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            326,
+            117
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            101,
+            183
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            123,
+            0
+        ]
+    },
+    {
+        "shapeType": "rectangle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            195,
+            117
+        ]
+    },
+    {
+        "shapeType": "circle",
+        "size": "50px",
+        "color": "black",
+        "loc": [
+            400,
+            237
+        ]
+    }
+]
