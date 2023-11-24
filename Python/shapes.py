@@ -1,5 +1,4 @@
 import tkinter as tk
-import json 
 
 
 class Shape:
@@ -47,27 +46,29 @@ class drawingBoard:
         self.activate_button(self.rec_button)
 
         #size and color featured have been implemeted yet
-        '''
+
         #create a combo drop down for shape sizes in case we can get it to work as entry option 
-        #label = tk.Label(self.root, text='Size:').grid(row=0, column=2, padx=5, pady=5)
-        #tk.Label.grid(row=0,column=0,padx=10,pady=10)
-        #self.size_button = tk.Entry(self.root)
-        #self.size_button.grid(row=0, column=2,padx=5,pady=5)
-        #self.size_button = tk.Entry(self.root, text='Size.')
-        #self.size_button.grid(row=0, column=2)
+        '''
+        self.label = tk.Label(self.root, text='Size:')
+        self.grid(row=0, column=2, padx=5, pady=5)
+        '''
+        self.size_button = tk.Entry(self.root)
+        self.size_button.grid(row=0, column=2,padx=5,pady=5)
+        self.size_button = tk.Entry(self.root, text='Size.')
+        self.size_button.grid(row=0, column=2)
+        
 
         #color
         
         self.color_button = tk.Entry(self.root, text='Color.')
         self.color_button.grid(row=0, column=3)  
-        '''
 
         #setup and loop stuff
         self.setup()
         self.root.mainloop()
 
 
-    def createShape(self, event):
+    def create_shape(self, event):
        
         size = self.DEFAULT_SIZE
         color = self.DEFAULT_COLOR
@@ -90,7 +91,7 @@ class drawingBoard:
         self.active_button = self.rec_button
         self.rec_button.bind("<Button-1>", self.build_rec)
         self.circle_button.bind("<Button-1>", self.build_circle)
-        self.can.bind("<Button-1>", self.createShape)
+        self.can.bind("<Button-1>", self.create_shape)
 
 
     
@@ -121,25 +122,8 @@ class drawingBoard:
     def pick_size(self):
         pass
     
-    #added the addtojson and serialized to appropriate json format// (IJ)
-    
-    def addToJSON(self, Newshape):
         
-        filePath = "shapes.json"
-        #needs to be able to add each shape to the JSON file
-        try:
-            with open(filePath, 'r') as Jsonfile:
-                data =json.load(Jsonfile)
-            print("data loaded successfully", data)
-        except FileNotFoundError:
-                #otherwise empty file so create empty list
-                data= []
-        except json.JSONDecodeError:
-            data = []
 
-        data.append(Newshape.__dict__)
-        with open(filePath,'w') as json_file:
-            json.dump(data,json_file, indent=4, default=lambda x:x.__dict__)
 
     #setup and loop stuff
         self.setup()
