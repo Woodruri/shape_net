@@ -1,14 +1,14 @@
 import tkinter as tk
 
 colors = [
-    "black"
-    "blue"
-    "green"
-    "red"
-    "pink"
-    "orange"
-    "purple"
-    "yellow"
+    "black",
+    "blue",
+    "green",
+    "red",
+    "pink",
+    "orange",
+    "purple",
+    "yellow",
     "white"
 ]
 
@@ -63,16 +63,19 @@ class drawingBoard:
         self.label = tk.Label(self.root, text='Size:')
         self.grid(row=0, column=2, padx=5, pady=5)
         '''
-        self.size_button = tk.Entry(self.root)
-        self.size_button.grid(row=0, column=2,padx=5,pady=5)
-        self.size_button = tk.Entry(self.root, text='Size.')
-        self.size_button.grid(row=0, column=2)
-        
 
-        #color
+        #the stuff to make the color drop down work
+        self.color_selected = tk.StringVar(self.root)
+        self.color_selected.set("select color")
+        self.color_drop = tk.OptionMenu(self.root, self.color_selected, *colors)
+        self.color_drop.grid(row=0, column=2,padx=5,pady=5)
+
+        #size button stuff
+        self.size_var = tk.DoubleVar()
+        self.size_button = tk.Scale(self.root, from_=1, to=200, orient="horizontal", 
+                                    label="shape size", variable=self.size_var)
+        self.size_button.grid(row=0, column=3)
         
-        self.color_button = tk.Entry(self.root, text='Color.')
-        self.color_button.grid(row=0, column=3)  
 
         #setup and loop stuff
         self.setup()
@@ -112,23 +115,24 @@ class drawingBoard:
     
     def activate_button(self, clicked_button):
 
-        if self.active_button:
+        '''if self.active_button:
             self.active_button.config(relief=tk.RAISED)
         clicked_button.config(relief=tk.SUNKEN)
-        self.active_button = clicked_button
+        self.active_button = clicked_button'''
         
-        '''
+        
         #rewrote to be able to togle between buttons(IJ)
         if self.active_button == clicked_button:
             current_relief = self.active_button.cget("relief")
             new_relief = tk.RAISED if current_relief == tk.SUNKEN else tk.SUNKEN
             self.active_button.config(relief= new_relief)
+            self.active_button = clicked_button if new_relief == tk.SUNKEN else None
         else:
             if self.active_button:
                 self.active_button.config(relief=tk.RAISED)
             clicked_button.config(relief=tk.SUNKEN)
             self.active_button = clicked_button
-        '''
+
 
     def build_rec(self,event=None):
         self.activate_button(self.rec_button)
@@ -142,11 +146,39 @@ class drawingBoard:
     def add_to_list(self, shape=Shape()):
         self.shapes.append(shape)
 
+    def print_list(self):
+        for shape in self.shapes:
+            print(shape)
 
-"""    #setup and loop stuff
+    def build_from_list(self, list = []):
+        for shape in list:
+            try:
+                match shape.shapeType:
+                    case "rectangle":
+                        self.can.create_rectangle(shape.location[0], shape.location[0] + int(shape.size), 
+                                                shape.location[0], 
+                                                shape.location[0] + int(shape.size), 
+                                                color=shape.color, outline=shape.color)
+                        self.add_to_list(shape)
 
-        self.setup()
-        self.root.mainloop()"""
+                    case "circle":
+                        #big ass chunk of code to create a damn circle
+                        self.can.create_oval(shape.location[0] - int(shape.size), 
+                                             shape.location[1] - int(shape.size), 
+                                             shape.location[0] + int(shape.size), 
+                                             shape.location[1] + int(shape.size),
+                                             fill=shape.color, outline=shape.color)
+                        self.add_to_list(shape)
+
+                    case _:
+                        print("improper shape type during import")
+
+            except Exception as ex:
+                print(f'error: {ex}')
+
+            self.add_to_list(shape)
+
+
 
 
 if __name__ == "__main__":
