@@ -1,15 +1,15 @@
 import tkinter as tk
 
 colors = [
-    "black",
-    "blue",
-    "green",
-    "red",
-    "pink",
-    "orange",
-    "purple",
-    "yellow",
-    "white"
+    'black',
+    'blue',
+    'green',
+    'red',
+    'pink',
+    'orange',
+    'purple',
+    'yellow',
+    'white'
 ]
 
 class Shape:
@@ -64,7 +64,7 @@ class drawingBoard:
 
         #size button stuff
         self.size_var = tk.DoubleVar()
-        self.size_button = tk.Scale(self.root, from_=1, to=200, orient="horizontal", 
+        self.size_button = tk.Scale(self.root, from_=10, to=200, orient="horizontal", 
                                     label="shape size", variable=self.size_var)
         self.size_button.grid(row=0, column=3)
         
@@ -77,13 +77,11 @@ class drawingBoard:
     def create_shape(self, event):
        
        #temporary til we allow user to change size and color
-        size = self.DEFAULT_SIZE
-        color = self.color_selected
+        size = self.size_var.get()
+        color = self.color_selected.get()
 
-        if color == None:
+        if color == "select color":
             color = self.DEFAULT_COLOR
-        else:
-            color = self.color_selected
 
 
         #create square stuff
@@ -111,24 +109,18 @@ class drawingBoard:
 
     
     def activate_button(self, clicked_button):
-
-        '''if self.active_button:
-            self.active_button.config(relief=tk.RAISED)
-        clicked_button.config(relief=tk.SUNKEN)
-        self.active_button = clicked_button'''
-        
-        
-        #rewrote to be able to togle between buttons(IJ)
         if self.active_button == clicked_button:
             current_relief = self.active_button.cget("relief")
             new_relief = tk.RAISED if current_relief == tk.SUNKEN else tk.SUNKEN
-            self.active_button.config(relief= new_relief)
-            self.active_button = clicked_button if new_relief == tk.SUNKEN else None
+            self.active_button.config(relief=new_relief)
+            self.active_button = None if new_relief == tk.RAISED else clicked_button
         else:
             if self.active_button:
                 self.active_button.config(relief=tk.RAISED)
             clicked_button.config(relief=tk.SUNKEN)
-            self.active_button = clicked_button
+            self.active_button = None if self.active_button == self.circle_button else clicked_button
+
+
 
 
     def build_rec(self,event=None):
