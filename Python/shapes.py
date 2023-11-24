@@ -56,14 +56,6 @@ class drawingBoard:
         self.active_button = self.rec_button
         self.activate_button(self.rec_button)
 
-        #size and color featured have been implemeted yet
-
-        #create a combo drop down for shape sizes in case we can get it to work as entry option 
-        '''
-        self.label = tk.Label(self.root, text='Size:')
-        self.grid(row=0, column=2, padx=5, pady=5)
-        '''
-
         #the stuff to make the color drop down work
         self.color_selected = tk.StringVar(self.root)
         self.color_selected.set("select color")
@@ -86,7 +78,12 @@ class drawingBoard:
        
        #temporary til we allow user to change size and color
         size = self.DEFAULT_SIZE
-        color = self.DEFAULT_COLOR
+        color = self.color_selected
+
+        if color == None:
+            color = self.DEFAULT_COLOR
+        else:
+            color = self.color_selected
 
 
         #create square stuff
@@ -140,9 +137,6 @@ class drawingBoard:
     def build_circle(self,event=None):
         self.activate_button(self.circle_button)
 
-    def pick_size(self):
-        pass
-
     def add_to_list(self, shape=Shape()):
         self.shapes.append(shape)
 
@@ -177,8 +171,6 @@ class drawingBoard:
                 print(f'error: {ex}')
 
             self.add_to_list(shape)
-
-
 
 
 if __name__ == "__main__":
