@@ -3,7 +3,6 @@ import threading
 
 import tkinter as tk
 from shapes import shape
-import json as js
 
 
 #list of clients connected to server

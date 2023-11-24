@@ -1,7 +1,6 @@
 import socket
 import tkinter as tk
 from shapes import shape
-import json as js
 
 
 

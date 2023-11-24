@@ -1,5 +1,16 @@
 import tkinter as tk
 
+colors = [
+    "black"
+    "blue"
+    "green"
+    "red"
+    "pink"
+    "orange"
+    "purple"
+    "yellow"
+    "white"
+]
 
 class Shape:
 
@@ -70,21 +81,25 @@ class drawingBoard:
 
     def create_shape(self, event):
        
+       #temporary til we allow user to change size and color
         size = self.DEFAULT_SIZE
         color = self.DEFAULT_COLOR
 
 
+        #create square stuff
         if self.active_button == self.rec_button:
             x0, y0 = event.x, event.y
             x1, y1 = x0 + int(size), y0 + int(size)
             self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
-            new_shape = Shape("rectangle", size="50px", color="black", location=(x0,y0))
-            self.addToJSON(new_shape)
+            new_shape = Shape("rectangle", size, color, (x0,y0))
+            self.add_to_list(new_shape)
+
+        #create circle stuff
         elif self.active_button == self.circle_button:
             x, y, r = event.x, event.y, int(size)
             self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
-            new_shape = Shape("circle", size="50px", color="black", location=(x, y))
-            self.addToJSON(new_shape)
+            new_shape = Shape("circle", size, color, (int(x), int(y)))
+            self.add_to_list(new_shape)
 
     def setup(self):
         #binding events
@@ -97,10 +112,11 @@ class drawingBoard:
     
     def activate_button(self, clicked_button):
 
-        '''if self.active_button:
+        if self.active_button:
             self.active_button.config(relief=tk.RAISED)
-        new_button.config(relief=tk.SUNKEN)
-        self.active_button = new_button
+        clicked_button.config(relief=tk.SUNKEN)
+        self.active_button = clicked_button
+        
         '''
         #rewrote to be able to togle between buttons(IJ)
         if self.active_button == clicked_button:
@@ -112,6 +128,7 @@ class drawingBoard:
                 self.active_button.config(relief=tk.RAISED)
             clicked_button.config(relief=tk.SUNKEN)
             self.active_button = clicked_button
+        '''
 
     def build_rec(self,event=None):
         self.activate_button(self.rec_button)
@@ -121,13 +138,15 @@ class drawingBoard:
 
     def pick_size(self):
         pass
-    
-        
+
+    def add_to_list(self, shape=Shape()):
+        self.shapes.append(shape)
 
 
-    #setup and loop stuff
+"""    #setup and loop stuff
+
         self.setup()
-        self.root.mainloop()
+        self.root.mainloop()"""
 
 
 if __name__ == "__main__":
