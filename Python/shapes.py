@@ -157,11 +157,6 @@ class drawingBoard:
         for shape in self.shapes:
             print(shape)
 
-    def format_shape_msg(self, shape_info):
-        #splits the incoming message into all fields seperated by a "|"
-        command, *data = shape_info.split("|")
-        return command, data
-
     def build_from_list(self, list = []):
         for shape in list:
             try:
