@@ -1,4 +1,5 @@
-import socket         
+import socket  
+import tkinter as tk       
 from shapes import drawingBoard
 import threading
 
@@ -12,14 +13,11 @@ import threading
 
 class clientDrawingBoard(drawingBoard):
 
-    def __init__(self):
+    def __init__(self, client):
         super().__init__()
+        self.client = client
 
-    def format_shape_msg(self, shape_info):
-        #splits the incoming message into all fields seperated by a "|"
-        command, *data = shape_info.split("|")
-
-
+    #creates the shape object
     def create_shape(self, event):
        
        #temporary til we allow user to change size and color
@@ -46,18 +44,22 @@ class clientDrawingBoard(drawingBoard):
         self.add_to_list(new_shape)
         self.format_and_send(new_shape)
 
+    def format_shape_msg(self, shape_info):
+        #splits the incoming message into all fields seperated by a "|"
+        command, *data = shape_info.split("|")
+        return command, data
 
 class client:
 
     def __init__(self):
 
         #creating our drawing board
-        self.board = drawingBoard(self) 
+        self.board = drawingBoard() 
 
 
         #initial everything
         serverHost= "127.0.0.1"
-        serverPort = 5050
+        serverPort = "5050"
         #server socket stuff
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((serverHost, serverHost))
