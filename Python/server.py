@@ -64,7 +64,7 @@ class server:
 
 
     #function to create server instance and start running
-    def server():
+    def start():
         host_ip = '127.0.0.1' 
         port = 5050
 
@@ -94,7 +94,9 @@ class server:
             server.close()
 
 
-server()
+server = server()
+
+server.start()
 
 
 
