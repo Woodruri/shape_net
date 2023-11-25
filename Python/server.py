@@ -2,7 +2,6 @@ import socket
 import threading
 
 import tkinter as tk
-from shapes import Shape
 from shapes import drawingBoard
 
 
@@ -13,80 +12,85 @@ from shapes import drawingBoard
 
 ##########################################
 
-#list of clients connected to server
-client_list = []
+class server:
 
-#basic function to send some "message" to all clients connected to the server
-def broadcast_message(message):
-    for client in client_list:
+    def __init__(self):
+        #list of clients connected to server
+        self.client_list = []
+
+    #basic function to send some "message" to all clients connected to the server
+    def broadcast_message(self, message):
+        for client in self.client_list:
+            try:
+                client.send(message.encode('utf-8'))
+            except Exception as e:
+                print(f"Error: {e} - while sending message to client: {client}")
+
+    #how we handle the recieved client stuff
+    def handle_client(client, address):
         try:
-            client.send(message.encode('utf-8'))
-        except Exception as e:
-            print(f"Error: {e} - while sending message to client: {client}")
+            while True:
 
-#how we handle the recieved client stuff
-def handle_client(client, address):
-    try:
-        while True:
+                #recieve the message
+                client_message = client.recv(1024).decode('utf-8')
 
-            #recieve the message
-            client_message = client.recv(1024).decode('utf-8')
+                #check if the client wants to close connection
+                if client_message.lower() == "close":
+                    client.send("Disconnected from server").encode('utf-8')
+                    break
 
-            #check if the client wants to close connection
-            if client_message.lower() == "close":
-                client.send("Disconnected from server").encode('utf-8')
-                break
+                #prints message (for now, it will be shapes later)
+                print(f"recieved message from {client} at address {address}: {client_message}")
 
-            #prints message (for now, it will be shapes later)
-            print(f"recieved message from {client} at address {address}: {client_message}")
+                command, *data = client_message.split("|")
+                
+                if command == "DRAW":
+                    shape_info = "|".join(data)
+                    broadcast_message(f"{address}: {shape_info}")
 
-            command, *data = client_message.split("|")
-            
-            if command == "DRAW":
-                shape_info = "|".join(data)
-                broadcast_message(f"{address}: {shape_info}")
+                #leaving this open for future commands that we want to add
 
-            #leaving this open for future commands that we want to add
+                #response = "accepted"
+                response = "message recieved"
+                client.send(response.encode('utf-8'))
 
-            #response = "accepted"
-            response = "message recieved"
-            client.send(response.encode('utf-8'))
-
-    except Exception as exc:
-        print(f"Error occured: {exc}")
-    
-    finally:
-        client.close()
-        print(f"Connection to {address} was closed")
+        except Exception as exc:
+            print(f"Error occured: {exc}")
+        
+        finally:
+            client.close()
+            print(f"Connection to {address} was closed")
 
 
-#function to create server instance and start running
-def server():
-    host_ip = '127.0.0.1' 
-    port = 5050
+    #function to create server instance and start running
+    def server():
+        host_ip = '127.0.0.1' 
+        port = 5050
 
-    try:
-        #create socket object
-        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server.bind((host_ip, port))
+        try:
+            #create socket object
+            server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server.bind((host_ip, port))
 
-        #set up server to listen for incoming client connections
-        server.listen()
-        print(f"Host IP: {host_ip} listening on Port: {port}")
+            #set up server to listen for incoming client connections
+            server.listen()
+            print(f"Host IP: {host_ip} listening on Port: {port}")
 
-        while True:
-            client, address = server.accept()
-            print(f"Client connected from {address[0]} at {address[1]}")
+            board = drawingBoard()
 
-            client_list.append(client)
+            while True:
+                client, address = server.accept()
+                print(f"Client connected from {address[0]} at {address[1]}")
 
-            thread = threading.Thread(target=handle_client, args=(client, address,))
-            thread.start()
+                client_list.append(client)
 
-    except Exception as ex:
-        print(f"Error: {ex}")
-    finally:
-        server.close()
+                thread = threading.Thread(target=handle_client, args=(client, address,))
+                thread.start()
+
+        except Exception as ex:
+            print(f"Error: {ex}")
+        finally:
+            server.close()
 
 
 server()
