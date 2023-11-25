@@ -16,6 +16,7 @@ class server:
     class serverDrawingBoard(drawingBoard):
         def __init__(self):
             super().__init__()
+            self.root.title("server side")
             #drop down to disconnect clients
             self.client_to_rem = tk.StringVar(self.root)
             self.client_to_rem.set("select client to remove")
@@ -67,7 +68,7 @@ class server:
                     self.broadcast_message(f"{address}: {shape_info}")
 
                     #handle the recieved shape from the client and draw it
-                    self.handle_recieved_shape(shape_info)
+                    self.board.handle_recieved_shape(shape_info)
 
                 #leaving this open for future commands that we want to add
                 

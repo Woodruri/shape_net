@@ -12,19 +12,20 @@ colors = [
     'white'
 ]
         
+class Shape:
+
+    def __init__(self, shape="circle",size="50 px",color="black",location=(150,150) ):
+        self.shapeType = shape
+        self.size = size
+        self.color = color
+        self.loc = location
+
+    def __str__(self):
+        return f'{self.shapeType},{self.size},{self.color},{self.loc}'
+
 
 class drawingBoard:
 
-    class Shape:
-
-        def __init__(self, shape="circle",size="50 px",color="black",location=(150,150) ):
-            self.shapeType = shape
-            self.size = size
-            self.color = color
-            self.loc = location
-
-        def __str__(self):
-            return f'{self.shapeType},{self.size},{self.color},{self.loc}'
 
     DEFAULT_COLOR = 'black'
     DEFAULT_SIZE = 25
@@ -67,10 +68,6 @@ class drawingBoard:
         self.size_button = tk.Scale(self.root, from_=10, to=200, orient="horizontal", 
                                     label="shape size", variable=self.size_var)
         self.size_button.grid(row=0, column=3)
-
-        
-
-        
 
         #setup and loop stuff
         self.setup()
