@@ -17,6 +17,7 @@ class server:
     def __init__(self):
         #list of clients connected to server
         self.client_list = []
+        self.board = drawingBoard()
 
     #basic function to send some "message" to all clients connected to the server
     def broadcast_message(self, message):
@@ -46,7 +47,7 @@ class server:
                 
                 if command == "DRAW":
                     shape_info = "|".join(data)
-                    broadcast_message(f"{address}: {shape_info}")
+                    self.board.broadcast_message(f"{address}: {shape_info}")
 
                 #leaving this open for future commands that we want to add
 
