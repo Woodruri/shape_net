@@ -1,28 +1,26 @@
 import socket
 import tkinter as tk
-from shapes import shape
-import json as js
+from shapes import Shape
+from shapes import drawingBoard
 
+def client_host():
 
-
-
-
-def clientHost():
-
+    #initial everything
     serverHost= "127.0.0.1"
     serverPort = 5050
 
+
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((serverHost, serverHost))
-    client.sendData()
+
+    board = drawingBoard()
+
     
 
-
-
-
-
-def sendData():
+def send_shape_info():
     pass
 
 
 
+if __name__ == "__main__":
+    client_host()
