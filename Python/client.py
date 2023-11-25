@@ -56,8 +56,13 @@ class client:
         except Exception as ex:
             print(f"Error receiving info from server: {ex}")
 
+    #this will split the incoming string message recieved into a shape object and return that object
     def handle_received_shape(self, shape_info):
-        pass
+        command, shape_type, size, color, location = shape_info.split("|")
+
+        to_add = self.board.Shape(shape_type, size, color, location)
+
+        self.board.build_shape(to_add)
 
     #function to send the shape info to the server
     def send_shape_info(self, shape):
