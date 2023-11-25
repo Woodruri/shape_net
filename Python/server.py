@@ -22,6 +22,12 @@ class server:
             self.client_drop = tk.OptionMenu(self.root, self.client_to_rem, *server.client_list)
             self.client_drop.grid(row=0, column=4)
 
+        def handle_received_shape(self, shape_info):
+            command, shape_type, size, color, location = shape_info.split("|")
+
+            to_add = self.Shape(shape_type, size, color, location)
+            self.build_shape(to_add)
+
 
     def __init__(self):
         #list of clients connected to server
@@ -59,6 +65,9 @@ class server:
                 if command == "DRAW":
                     shape_info = "|".join(data)
                     self.broadcast_message(f"{address}: {shape_info}")
+
+                    #handle the recieved shape from the client and draw it
+                    self.handle_recieved_shape(shape_info)
 
                 #leaving this open for future commands that we want to add
                 
