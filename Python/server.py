@@ -2,7 +2,8 @@ import socket
 import threading
 
 import tkinter as tk
-from shapes import shape
+from shapes import Shape
+from shapes import drawingBoard
 
 
 #list of clients connected to server
@@ -11,20 +12,38 @@ client_list = []
 #basic function to send some "message" to all clients connected to the server
 def broadcast_message(message):
     for client in client_list:
-        client.send(message)
+        try:
+            client.send(message.encode('utf-8'))
+        except Exception as e:
+            print(f"Error: {e} - while sending message to client: {client}")
 
+#how we handle the recieved client stuff
 def handle_client(client, address):
     try:
         while True:
-            client_message = client.recv(1024) #might need to include decode?
 
+            #recieve the message
+            client_message = client.recv(1024).decode('utf-8')
+
+            #check if the client wants to close connection
             if client_message.lower() == "close":
-                client.send("Disconnected from server")
+                client.send("Disconnected from server").encode('utf-8')
                 break
-            print(f"{client_message} recieved")
+
+            #prints message (for now, it will be shapes later)
+            print(f"recieved message from {client} at address {address}: {client_message}")
+
+            command, *data = client_message.split("|")
+            
+            if command == "DRAW":
+                shape_info = "|".join(data)
+                broadcast_message(f"{address}: {shape_info}")
+
+            #leaving this open for future commands that we want to add
 
             #response = "accepted"
-            client.send("accepted")
+            response = "message recieved"
+            client.send(response.encode('utf-8'))
 
     except Exception as exc:
         print(f"Error occured: {exc}")
