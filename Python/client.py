@@ -1,11 +1,10 @@
-import socket
-import tkinter as tk
+import socket         
 from shapes import drawingBoard
 
 
 class client:
-    def client_host():
 
+    def __init__(self):
         #initial everything
         serverHost= "127.0.0.1"
         serverPort = 5050
@@ -14,9 +13,7 @@ class client:
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client.connect((serverHost, serverHost))
 
-        board = drawingBoard()
-
-        
+        board = drawingBoard()   
 
     def send_shape_info():
         pass
@@ -24,4 +21,4 @@ class client:
 
 
 if __name__ == "__main__":
-    client_host()
+    client = client()
