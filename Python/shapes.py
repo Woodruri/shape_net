@@ -11,20 +11,20 @@ colors = [
     'yellow',
     'white'
 ]
-
-class Shape:
-
-    def __init__(self, shape="circle",size="50 px",color="black",location=(150,150) ):
-        self.shapeType = shape
-        self.size = size
-        self.color = color
-        self.loc = location
-
-    def __str__(self):
-        return f'{self.shapeType},{self.size},{self.color},{self.loc}'
         
 
 class drawingBoard:
+
+    class Shape:
+
+        def __init__(self, shape="circle",size="50 px",color="black",location=(150,150) ):
+            self.shapeType = shape
+            self.size = size
+            self.color = color
+            self.loc = location
+
+        def __str__(self):
+            return f'{self.shapeType},{self.size},{self.color},{self.loc}'
 
     DEFAULT_COLOR = 'black'
     DEFAULT_SIZE = 25
