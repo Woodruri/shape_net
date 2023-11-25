@@ -3,9 +3,6 @@ import tkinter as tk
 from shapes import shape
 
 
-
-
-
 def clientHost():
 
     serverHost= "127.0.0.1"
@@ -15,10 +12,6 @@ def clientHost():
     client.connect((serverHost, serverHost))
     client.sendData()
     
-
-
-
-
 
 def sendData():
     pass

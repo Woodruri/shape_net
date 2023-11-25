@@ -6,6 +6,13 @@ from shapes import Shape
 from shapes import drawingBoard
 
 
+##########################################
+
+# IMPORTANT: message format is: "COMMAND|<shape_type>|<size>|<color>|<location>"
+#Example: DRAW|"rectangle"|"50 px"|"black"|(150,150)
+
+##########################################
+
 #list of clients connected to server
 client_list = []
 
@@ -50,7 +57,7 @@ def handle_client(client, address):
     
     finally:
         client.close()
-        print(f"Connection to {address[1]} was closed")
+        print(f"Connection to {address} was closed")
 
 
 #function to create server instance and start running

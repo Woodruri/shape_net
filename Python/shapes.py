@@ -99,6 +99,7 @@ class drawingBoard:
             new_shape = Shape("circle", size, color, (int(x), int(y)))
             self.add_to_list(new_shape)
 
+    #bulk of the initiation work
     def setup(self):
         #binding events
         self.active_button = self.rec_button
@@ -106,8 +107,8 @@ class drawingBoard:
         self.circle_button.bind("<Button-1>", self.build_circle)
         self.can.bind("<Button-1>", self.create_shape)
 
-
-    
+    #this is a bitch of a function and I hate it, can't get both the disabling and raising to work
+    #they seem to be mutually exclusive
     def activate_button(self, clicked_button):
         if self.active_button == clicked_button:
             current_relief = self.active_button.cget("relief")
@@ -120,9 +121,7 @@ class drawingBoard:
             clicked_button.config(relief=tk.SUNKEN)
             self.active_button = None if self.active_button == self.circle_button else clicked_button
 
-
-
-
+    #lil helper guys
     def build_rec(self,event=None):
         self.activate_button(self.rec_button)
 
