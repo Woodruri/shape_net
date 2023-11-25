@@ -11,6 +11,10 @@ from shapes import drawingBoard
 
 ##########################################
 
+class serverDrawingBoard(drawingBoard):
+    def __init__(self):
+        super().__init__()
+
 class server:
 
     def __init__(self):
