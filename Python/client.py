@@ -43,8 +43,16 @@ class client:
 
     #function to start listening for new canvas updates
     def start_listening(self):
-        listener = threading.Thread(target=self.recieve_shape_info)
-        listener.start()  
+        try:
+            while True:
+                shape_info = self.client_socket.recv(1024).decode('utf-8')
+                # Handle the received shape information (update canvas, etc.)
+                self.handle_received_shape(shape_info)
+
+                # Send shape information to the server
+                self.send_shape_info(self.board.shapes[-1])
+        except Exception as ex:
+            print(f"Error receiving info from server: {ex}")  
 
     #function to take in the recieved shape info
     def recieve_shape_info(self):

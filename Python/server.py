@@ -19,7 +19,7 @@ class server:
             #drop down to disconnect clients
             self.client_to_rem = tk.StringVar(self.root)
             self.client_to_rem.set("select client to remove")
-            self.client_drop = tk.OptionMenu(self.root, self.client_to_rem, *self.clients)
+            self.client_drop = tk.OptionMenu(self.root, self.client_to_rem, *server.client_list)
             self.client_drop.grid(row=0, column=4)
 
 
@@ -61,8 +61,7 @@ class server:
                     self.broadcast_message(f"{address}: {shape_info}")
 
                 #leaving this open for future commands that we want to add
-
-
+                
                 #response = "accepted"
                 response = "message recieved"
                 client.send(response.encode('utf-8'))
@@ -72,6 +71,7 @@ class server:
         
         finally:
             client.close()
+            self.client_list.remove(client)
             print(f"Connection to {address} was closed")
 
 
@@ -107,7 +107,6 @@ class server:
 if __name__ == "__main__":
 
     serv = server()
-
     serv.start()
 
 
