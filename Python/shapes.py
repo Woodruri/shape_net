@@ -28,7 +28,7 @@ class drawingBoard:
 
     DEFAULT_COLOR = 'black'
     DEFAULT_SIZE = 25
-    COLUMN_NO = 4
+    COLUMN_NO = 5
 
     def __init__(self):
 
@@ -62,11 +62,14 @@ class drawingBoard:
         self.color_drop = tk.OptionMenu(self.root, self.color_selected, *colors)
         self.color_drop.grid(row=0, column=2,padx=5,pady=5)
 
-        #size button stuff
+        #size slider stuff
         self.size_var = tk.DoubleVar()
         self.size_button = tk.Scale(self.root, from_=10, to=200, orient="horizontal", 
                                     label="shape size", variable=self.size_var)
         self.size_button.grid(row=0, column=3)
+
+        
+
         
 
         #setup and loop stuff
@@ -89,7 +92,7 @@ class drawingBoard:
             x0, y0 = event.x, event.y
             x1, y1 = x0 + int(size), y0 + int(size)
             self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
-            new_shape = self.shape("rectangle", size, color, (x0,y0))
+            new_shape = self.Shape("rectangle", size, color, (x0,y0))
             self.add_to_list(new_shape)
 
         #create circle stuff
@@ -128,12 +131,36 @@ class drawingBoard:
     def build_circle(self,event=None):
         self.activate_button(self.circle_button)
 
+    def build_shape(self, shape = Shape()):
+        try:
+            if shape.shapeType == "rectangle":
+                x0, y0 = shape.loc
+                x1, y1 = x0 + int(shape.size), y0 + int(shape.size)
+                self.can.create_rectangle(x0, y0, x1, y1, fill=shape.color, outline=shape.color)
+            elif shape.shapeType == "circle":
+                x, y = shape.loc
+                r = int(shape.size)
+                self.can.create_oval(x - r, y - r, x + r, y + r, fill=shape.color, outline=shape.color)
+            else:
+                print(f"Unsupported shape type: {shape.shapeType}")
+
+            self.add_to_list(shape)
+
+        except Exception as exc:
+            print(f"Error: {exc} occurred while adding shape: {shape}")
+
+
     def add_to_list(self, shape=Shape()):
         self.shapes.append(shape)
 
     def print_list(self):
         for shape in self.shapes:
             print(shape)
+
+    def format_shape_msg(self, shape_info):
+        #splits the incoming message into all fields seperated by a "|"
+        command, *data = shape_info.split("|")
+        return command, data
 
     def build_from_list(self, list = []):
         for shape in list:

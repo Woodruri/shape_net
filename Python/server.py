@@ -1,6 +1,6 @@
 import socket
 import threading
-
+import tkinter as tk
 from shapes import drawingBoard
 
 
@@ -11,11 +11,17 @@ from shapes import drawingBoard
 
 ##########################################
 
-class serverDrawingBoard(drawingBoard):
-    def __init__(self):
-        super().__init__()
-
 class server:
+
+    class serverDrawingBoard(drawingBoard):
+        def __init__(self):
+            super().__init__()
+            #drop down to disconnect clients
+            self.client_to_rem = tk.StringVar(self.root)
+            self.client_to_rem.set("select client to remove")
+            self.client_drop = tk.OptionMenu(self.root, self.client_to_rem, *self.clients)
+            self.client_drop.grid(row=0, column=4)
+
 
     def __init__(self):
         #list of clients connected to server

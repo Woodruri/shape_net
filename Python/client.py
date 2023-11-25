@@ -11,64 +11,40 @@ import threading
 
 ##########################################
 
-class clientDrawingBoard(drawingBoard):
-
-    def __init__(self, client):
-        super().__init__()
-        self.client = client
-
-    #creates the shape object
-    def create_shape(self, event):
-       
-       #temporary til we allow user to change size and color
-        size = self.size_var.get()
-        color = self.color_selected.get()
-
-        if color == "select color":
-            color = self.DEFAULT_COLOR
-
-
-        #create square stuff
-        if self.active_button == self.rec_button:
-            x0, y0 = event.x, event.y
-            x1, y1 = x0 + int(size), y0 + int(size)
-            self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
-            new_shape = self.shape("rectangle", size, color, (x0,y0))
-
-        #create circle stuff
-        elif self.active_button == self.circle_button:
-            x, y, r = event.x, event.y, int(size)
-            self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
-            new_shape = self.Shape("circle", size, color, (int(x), int(y)))
-
-        self.add_to_list(new_shape)
-        self.format_and_send(new_shape)
-
-    def format_shape_msg(self, shape_info):
-        #splits the incoming message into all fields seperated by a "|"
-        command, *data = shape_info.split("|")
-        return command, data
 
 class client:
+
+    class clientDrawingBoard(drawingBoard):
+
+        def __init__(self, client):
+            super().__init__()
+            self.client = client
+
+            self.close_button = tk.Button(self.root, text='close connecion',command=self.close_connection)
+            self.close_button.grid(row=0, column=4)
+
+        #creates the parent shape object, meant to be worked on top of
+        def create_shape(self, event):
+            super().create_shape(event)
 
     def __init__(self):
 
         #creating our drawing board
-        self.board = drawingBoard() 
+        self.board = self.clientDrawingBoard(self)  
 
 
         #initial everything
         serverHost= "127.0.0.1"
-        serverPort = "5050"
+        serverPort = 5050
         #server socket stuff
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.connect((serverHost, serverHost))
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client_socket.connect((serverHost, serverPort))
 
 
     #function to start listening for new canvas updates
     def start_listening(self):
         listener = threading.Thread(target=self.recieve_shape_info)
-        listener.start()   
+        listener.start()  
 
     #function to take in the recieved shape info
     def recieve_shape_info(self):
@@ -96,5 +72,13 @@ class client:
         self.board.create_shape(shape)
         self.send_shape_info(shape)
 
+    def close_connection(self):
+        try:
+            self.client_socket.send("close".encode('utf-8'))
+            self.client_socket.close()
+        except Exception as exc:
+            print(f"error: {exc} - occured during closing connection")
+
 if __name__ == "__main__":
     cli = client()
+    cli.start_listening()
