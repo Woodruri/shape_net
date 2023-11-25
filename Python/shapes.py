@@ -89,14 +89,14 @@ class drawingBoard:
             x0, y0 = event.x, event.y
             x1, y1 = x0 + int(size), y0 + int(size)
             self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
-            new_shape = Shape("rectangle", size, color, (x0,y0))
+            new_shape = self.shape("rectangle", size, color, (x0,y0))
             self.add_to_list(new_shape)
 
         #create circle stuff
         elif self.active_button == self.circle_button:
             x, y, r = event.x, event.y, int(size)
             self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
-            new_shape = Shape("circle", size, color, (int(x), int(y)))
+            new_shape = self.Shape("circle", size, color, (int(x), int(y)))
             self.add_to_list(new_shape)
 
     #bulk of the initiation work

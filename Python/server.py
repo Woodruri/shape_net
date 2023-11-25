@@ -1,7 +1,6 @@
 import socket
 import threading
 
-import tkinter as tk
 from shapes import drawingBoard
 
 
@@ -25,10 +24,10 @@ class server:
             try:
                 client.send(message.encode('utf-8'))
             except Exception as e:
-                print(f"Error: {e} - while sending message to client: {client}")
+                print(f"Error: {e} - while sending message to client:client_list {client}")
 
     #how we handle the recieved client stuff
-    def handle_client(client, address):
+    def handle_client(self, client, address):
         try:
             while True:
 
@@ -37,19 +36,22 @@ class server:
 
                 #check if the client wants to close connection
                 if client_message.lower() == "close":
-                    client.send("Disconnected from server").encode('utf-8')
+                    client.send(("Disconnected from server").encode('utf-8'))
                     break
 
                 #prints message (for now, it will be shapes later)
                 print(f"recieved message from {client} at address {address}: {client_message}")
 
+                #splits the incoming message into all fields seperated by a "|"
                 command, *data = client_message.split("|")
                 
+                #drawing command AKA adding a shape to the canvas
                 if command == "DRAW":
                     shape_info = "|".join(data)
-                    self.board.broadcast_message(f"{address}: {shape_info}")
+                    self.broadcast_message(f"{address}: {shape_info}")
 
                 #leaving this open for future commands that we want to add
+
 
                 #response = "accepted"
                 response = "message recieved"
@@ -64,8 +66,8 @@ class server:
 
 
     #function to create server instance and start running
-    def start():
-        host_ip = '127.0.0.1' 
+    def start(self):
+        host_ip = '127.0.0.1'
         port = 5050
 
         try:
@@ -77,15 +79,13 @@ class server:
             server.listen()
             print(f"Host IP: {host_ip} listening on Port: {port}")
 
-            board = drawingBoard()
-
             while True:
                 client, address = server.accept()
                 print(f"Client connected from {address[0]} at {address[1]}")
 
-                client_list.append(client)
+                self.client_list.append(client)
 
-                thread = threading.Thread(target=handle_client, args=(client, address,))
+                thread = threading.Thread(target=self.handle_client, args=(client, address,))
                 thread.start()
 
         except Exception as ex:
@@ -94,9 +94,11 @@ class server:
             server.close()
 
 
-server = server()
+if __name__ == "__main__":
 
-server.start()
+    serv = server()
+
+    serv.start()
 
 
 
