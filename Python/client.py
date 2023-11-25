@@ -1,6 +1,7 @@
 import socket  
 import tkinter as tk       
-from shapes import drawingBoard
+from shapes import Shape
+from shapes import colors
 import threading
 
 ##########################################
@@ -12,12 +13,21 @@ import threading
 
 class client:
 
-    class clientDrawingBoard(drawingBoard):
+    class clientDrawingBoard():
 
-        def __init__(self):
+        DEFAULT_COLOR = 'black'
+        DEFAULT_SIZE = 25
+        COLUMN_NO = 5
+
+        def __init__(self, client_instance):
+
+            #saving out client stuff
+            self.client_inst = client_instance
             #Root is our base window
             self.root = tk.Tk()
             self.root.title("Drawing Board Networking App: client side")
+
+            #setting which client we are going to be using
 
             #create array to store shapes being "drawn" on canvas
             self.shapes = []
@@ -53,15 +63,12 @@ class client:
             self.size_button.grid(row=0, column=3)
 
             #the close connection button
-            self.close_button = tk.Button(self.root, text='close connection', command=self.close_connection)
+            self.close_button = tk.Button(self.root, text='close connection', command=client_instance.close_connection)
             self.close_button.grid(row=0, column=4)
 
             #setup and loop stuff
             self.setup()
             self.root.mainloop()
-            self.root.title("client side")
-
-
 
 
         def create_shape(self, event):
@@ -79,14 +86,14 @@ class client:
                 x0, y0 = event.x, event.y
                 x1, y1 = x0 + int(size), y0 + int(size)
                 self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
-                new_shape = self.Shape("rectangle", size, color, (x0,y0))
+                new_shape = Shape("rectangle", size, color, (x0,y0))
                 self.add_to_list(new_shape)
 
             #create circle stuff
             elif self.active_button == self.circle_button:
                 x, y, r = event.x, event.y, int(size)
                 self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
-                new_shape = self.Shape("circle", size, color, (int(x), int(y)))
+                new_shape = Shape("circle", size, color, (int(x), int(y)))
                 self.add_to_list(new_shape)
 
         #bulk of the initiation work
@@ -174,16 +181,14 @@ class client:
 
 
     def __init__(self):
-
-        #creating our drawing board
-        self.board = self.clientDrawingBoard(self)
-
         #initial everything
         serverHost= "127.0.0.1"
         serverPort = 5050
         #server socket stuff
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((serverHost, serverPort))
+        #creating our drawing board
+        self.board = self.clientDrawingBoard(self)
 
 
     #function to start listening for new canvas updates
