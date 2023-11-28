@@ -15,7 +15,14 @@ from shapes import colors
 class server:
 
     class serverDrawingBoard():
-        def __init__(self):
+
+        DEFAULT_COLOR = 'black'
+        DEFAULT_SIZE = 25
+        COLUMN_NO = 5
+
+        def __init__(self, server_instance):
+
+            self.server_inst = server_instance
             #Root is our base window
             self.root = tk.Tk()
             self.root.title("Drawing Board Networking App")
@@ -55,7 +62,7 @@ class server:
             #drop down to disconnect clients
             self.client_to_rem = tk.StringVar(self.root)
             self.client_to_rem.set("select client to remove")
-            self.client_drop = tk.OptionMenu(self.root, self.client_to_rem, *server.client_list)
+            self.client_drop = tk.OptionMenu(self.root, self.client_to_rem, *self.server_inst.client_list, value="remove")
             self.client_drop.grid(row=0, column=4)
 
             #setup and loop stuff
@@ -182,7 +189,7 @@ class server:
 
         #list of clients connected to server
         self.client_list = []
-        self.board = serverDrawingBoard()
+        self.board = self.serverDrawingBoard(self)
 
     #basic function to send some "message" to all clients connected to the server
     def broadcast_message(self, message):
@@ -217,7 +224,7 @@ class server:
                     self.broadcast_message(f"{address}: {shape_info}")
 
                     #handle the recieved shape from the client and draw it
-                    self.board.handle_recieved_shape(shape_info)
+                    self.board.handle_received_shape(shape_info)
 
                 #leaving this open for future commands that we want to add
                 
@@ -267,10 +274,3 @@ if __name__ == "__main__":
 
     serv = server()
     serv.start()
-
-
-
-
-
-
-
