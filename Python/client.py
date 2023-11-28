@@ -24,6 +24,7 @@ class client:
         #server socket stuff
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((serverHost, serverPort))
+        self.start_listening()
         #creating our drawing board
         self.create_board()
         
@@ -128,6 +129,7 @@ class client:
         self.activate_button(self.circle_button)
 
     def build_shape(self, shape = Shape()):
+        print(f"inside build_shape function, shape = {shape}")
         try:
             if shape.shapeType == "rectangle":
                 x0, y0 = shape.loc
@@ -148,7 +150,7 @@ class client:
 
     def add_to_list(self, shape=Shape()):
         self.shapes.append(shape)
-        self.print_list()
+        print(f"added shape: {shape} to list")
         self.send_shape_info(shape)
 
     def print_list(self):
@@ -181,57 +183,68 @@ class client:
             except Exception as ex:
                 print(f'error: {ex}')
 
-            self.add_to_list(shape)
-
 
     #function to start listening for new canvas updates
     def start_listening(self):
         try:
-
+            print("starting to listen for server messages")
             #open up new threads that listen for server
-            listening_thread = threading.Thread(target=self.recieve_shape_info)
+            listening_thread = threading.Thread(target=self.receive_shape_info)
             listening_thread.start()
         except Exception as ex:
             print(f"Error receiving info from server: {ex}")  
 
-    #function to take in the recieved shape info
-    def recieve_shape_info(self):
+    #function to take in the received shape info
+    def receive_shape_info(self):
+        print(f"Inside receive shape info function")
         try:
             while True:
+                #receieve the shape info
                 shape_info = self.client_socket.recv(1024).decode('utf-8')
+                #if an empty message, break the loop
+                if not shape_info:
+                    break
+                print(f"received: {shape_info}")
                 # Handle the received shape information (update canvas, etc.)
                 self.handle_received_shape(shape_info)
         except Exception as ex:
             print(f"Error receiving info from server: {ex}")
+        finally:
+            #in case something goes wrong
+            self.client_socket.close()
 
-    #this will split the incoming string message recieved into a shape object and return that object
+    #this will split the incoming string message received into a shape object and return that object
     def handle_received_shape(self, shape_info):
-        #command isn't used but it's required to decode the message
-        command, shape_type, size, color, location = shape_info.split("|")
-        to_add = Shape(shape_type, size, color, location)
-        self.board.build_shape(to_add)
+        try:
+            print(f"inside handle received shape function, shape_info = {shape_info}")
+            #command isn't used but it's required to decode the message
+            command, shape_type, size, color, location = shape_info.split("|")
+            to_add = Shape(shape_type, size, color, location)
+            print(f"handle received shape: {to_add}")
+            self.build_shape(to_add)
+        except Exception as ex:
+            print(f"error: {ex} received in handle_received_shape function")
 
     #function to send the shape info to the server
     def send_shape_info(self, shape=Shape()):
         try:
             message = f"DRAW|{shape.shapeType}|{shape.size}|{shape.color}|{shape.loc}"
-            self.client_socket.sendall(message.encode('utf-8'))
+            self.client_socket.send(message.encode('utf-8'))
         except Exception as exc:
             print(f'error: {exc}')
 
     #function to add the shape to the current canvas
     def add_shape(self, shape=Shape()):
-        self.board.create_shape(shape)
+        self.create_shape(shape)
         self.send_shape_info(shape)
 
     def close_connection(self):
         try:
             self.client_socket.send("close".encode('utf-8'))
             #self.client_socket.close()
-            self.board.root.destroy()
+            self.root.quit()
         except Exception as exc:
             print(f"error: {exc} - occured during closing connection")
 
 if __name__ == "__main__":
     cli = client()
-    cli.start_listening()

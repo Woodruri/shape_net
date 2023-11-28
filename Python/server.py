@@ -34,14 +34,16 @@ class server:
 
     #basic function to send some "message" to all clients connected to the server
     def broadcast_message(self, message):
+        print(f"broadcasting the message: {message}")
         for client in self.client_list:
             try:
                 client.send(message.encode('utf-8'))
             except Exception as e:
-                print(f"Error: {e} - while sending message to client:client_list {client}")
+                print(f"Error: {e} - while sending message to client: {client}")
 
     #how we handle the recieved client stuff
     def handle_client(self, client, address):
+        print(f"inside handle_client func in server - Client: {client}, address: {address}")
         try:
             while True:
 
@@ -55,24 +57,25 @@ class server:
                     break
 
                 #prints message (for now, it will be shapes later)
-                print(f"recieved message from {client} at address {address}: {client_message}")
+                #print(f"recieved message from {client} at address {address}: {client_message}")
+                self.broadcast_message(client_message)
 
-                #splits the incoming message into all fields seperated by a "|"
+                '''#splits the incoming message into all fields seperated by a "|"
                 command, *data = client_message.split("|")
                 
                 #drawing command AKA adding a shape to the canvas
                 if command == "DRAW":
                     shape_info = "|".join(data)
-                    self.broadcast_message(f"{address}: {shape_info}")
+                    self.broadcast_message(client_message)
 
                     #handle the recieved shape from the client and draw it
-                    self.handle_received_shape(shape_info)
+                    self.handle_received_shape(shape_info)'''
 
                 #leaving this open for future commands that we want to add
                 
-                #response = "accepted"
-                response = "message recieved"
-                client.send(response.encode('utf-8'))
+                '''#response = "accepted"
+                response = " message recieved"
+                client.send(response.encode('utf-8'))'''
 
         except Exception as exc:
             print(f"Error occured: {exc}")
