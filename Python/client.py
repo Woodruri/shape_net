@@ -4,6 +4,7 @@ from shapes import Shape
 from shapes import colors
 import threading
 import traceback as tb
+import ast
 
 ##########################################
 
@@ -133,10 +134,11 @@ class client:
         print(f"inside build_shape function, shape = {shape}")
         try:
             print(type(shape.loc))
-            shape_tuple = tuple(shape.loc)
+            shape_tuple = ast.literal_eval(shape.loc)
+
             if shape.shapeType == "rectangle":
                 x0, y0 = shape_tuple
-                x1, y1 = x0 + int(shape.size), y0 + int(shape.size)
+                x1, y1 = x0 + int(float(shape.size)), y0 + int(float(shape.size))
                 self.can.create_rectangle(x0, y0, x1, y1, fill=shape.color, outline=shape.color)
             elif shape.shapeType == "circle":
                 x, y = shape_tuple
