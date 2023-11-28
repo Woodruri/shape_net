@@ -14,7 +14,7 @@ colors = [
         
 class Shape:
 
-    def __init__(self, shape="circle",size="50 px",color="black",location=(150,150) ):
+    def __init__(self, shape="circle",size=50,color="black",location=(150,150) ):
         self.shapeType = shape
         self.size = size
         self.color = color

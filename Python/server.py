@@ -8,7 +8,7 @@ from shapes import colors
 ##########################################
 
 # IMPORTANT: message format is: "COMMAND|<shape_type>|<size>|<color>|<location>"
-#Example: DRAW|"rectangle"|"50 px"|"black"|(150,150)
+#Example: DRAW|"rectangle"|50|"black"|(150,150)
 
 ##########################################
 
