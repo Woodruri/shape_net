@@ -3,6 +3,7 @@ import tkinter as tk
 from shapes import Shape
 from shapes import colors
 import threading
+import traceback as tb
 
 ##########################################
 
@@ -131,12 +132,14 @@ class client:
     def build_shape(self, shape = Shape()):
         print(f"inside build_shape function, shape = {shape}")
         try:
+            print(type(shape.loc))
+            shape_tuple = tuple(shape.loc)
             if shape.shapeType == "rectangle":
-                x0, y0 = shape.loc
+                x0, y0 = shape_tuple
                 x1, y1 = x0 + int(shape.size), y0 + int(shape.size)
                 self.can.create_rectangle(x0, y0, x1, y1, fill=shape.color, outline=shape.color)
             elif shape.shapeType == "circle":
-                x, y = shape.loc
+                x, y = shape_tuple
                 r = int(shape.size)
                 self.can.create_oval(x - r, y - r, x + r, y + r, fill=shape.color, outline=shape.color)
             else:
@@ -146,6 +149,7 @@ class client:
 
         except Exception as exc:
             print(f"Error: {exc} occurred while adding shape: {shape}")
+            print(tb.format_exc())
 
 
     def add_to_list(self, shape=Shape()):
@@ -217,13 +221,20 @@ class client:
     def handle_received_shape(self, shape_info):
         try:
             print(f"inside handle received shape function, shape_info = {shape_info}")
-            #command isn't used but it's required to decode the message
-            command, shape_type, size, color, location = shape_info.split("|")
-            to_add = Shape(shape_type, size, color, location)
-            print(f"handle received shape: {to_add}")
-            self.build_shape(to_add)
+
+            parts = shape_info.split("|")
+
+            if len(parts) == 5:
+                #command isn't used but it's required to decode the message
+                command, shape_type, size, color, location = shape_info.split("|")
+                to_add = Shape(shape_type, size, color, location)
+                print(f"handle received shape: {to_add}")
+                self.build_shape(to_add)
+            else:
+                print("improper message format in handle_received_shape function")
         except Exception as ex:
             print(f"error: {ex} received in handle_received_shape function")
+            
 
     #function to send the shape info to the server
     def send_shape_info(self, shape=Shape()):
