@@ -11,21 +11,26 @@ import threading
 
 ##########################################
 
-class clientDrawingBoard():
+class client:
 
     DEFAULT_COLOR = 'black'
     DEFAULT_SIZE = 25
     COLUMN_NO = 5
 
-    def __init__(self, client_instance=client()):
-
-        #saving out client stuff
-        self.client_inst = client_instance
+    def __init__(self):
+        #initial everything
+        serverHost= "127.0.0.1"
+        serverPort = 5050
+        #server socket stuff
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client_socket.connect((serverHost, serverPort))
+        #creating our drawing board
+        self.create_board()
+        
+    def create_board(self):
         #Root is our base window
         self.root = tk.Tk()
         self.root.title("Drawing Board Networking App: client side")
-
-        #setting which client we are going to be using
 
         #create array to store shapes being "drawn" on canvas
         self.shapes = []
@@ -61,13 +66,12 @@ class clientDrawingBoard():
         self.size_button.grid(row=0, column=3)
 
         #the close connection button
-        self.close_button = tk.Button(self.root, text='close connection', command=client_instance.close_connection)
+        self.close_button = tk.Button(self.root, text='close connection', command=self.close_connection)
         self.close_button.grid(row=0, column=4)
 
         #setup and loop stuff
         self.setup()
         self.root.mainloop()
-
 
     def create_shape(self, event):
         
@@ -145,7 +149,7 @@ class clientDrawingBoard():
     def add_to_list(self, shape=Shape()):
         self.shapes.append(shape)
         self.print_list()
-        self.client_inst.send_shape_info(shape)
+        self.send_shape_info(shape)
 
     def print_list(self):
         for shape in self.shapes:
@@ -178,21 +182,6 @@ class clientDrawingBoard():
                 print(f'error: {ex}')
 
             self.add_to_list(shape)
-
-
-class client:
-
-    
-
-    def __init__(self):
-        #initial everything
-        serverHost= "127.0.0.1"
-        serverPort = 5050
-        #server socket stuff
-        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect((serverHost, serverPort))
-        #creating our drawing board
-        self.board = clientDrawingBoard(self)
 
 
     #function to start listening for new canvas updates
