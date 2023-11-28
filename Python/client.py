@@ -93,6 +93,7 @@ class client:
             self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
             new_shape = Shape("rectangle", size, color, (x0,y0))
             self.add_to_list(new_shape)
+            self.send_shape_info(new_shape)
 
         #create circle stuff
         elif self.active_button == self.circle_button:
@@ -100,6 +101,7 @@ class client:
             self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
             new_shape = Shape("circle", size, color, (int(x), int(y)))
             self.add_to_list(new_shape)
+            self.send_shape_info(new_shape)
 
     #bulk of the initiation work
     def setup(self):
@@ -107,7 +109,8 @@ class client:
         self.active_button = self.rec_button
         self.rec_button.bind("<Button-1>", self.build_rec)
         self.circle_button.bind("<Button-1>", self.build_circle)
-        self.can.bind("<Button-1>", self.create_shape)
+        self.can.bind("<Button-1>", self.
+                      pe)
 
     #this is a bitch of a function and I hate it, can't get both the disabling and raising to work
     #they seem to be mutually exclusive
@@ -157,7 +160,6 @@ class client:
     def add_to_list(self, shape=Shape()):
         self.shapes.append(shape)
         print(f"added shape: {shape} to list")
-        self.send_shape_info(shape)
 
     def print_list(self):
         for shape in self.shapes:
@@ -245,11 +247,6 @@ class client:
             self.client_socket.send(message.encode('utf-8'))
         except Exception as exc:
             print(f'error: {exc}')
-
-    #function to add the shape to the current canvas
-    def add_shape(self, shape=Shape()):
-        self.create_shape(shape)
-        self.send_shape_info(shape)
 
     def close_connection(self):
         try:
