@@ -97,7 +97,7 @@ class server:
             elif self.active_button == self.circle_button:
                 x, y, r = event.x, event.y, int(size)
                 self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
-                new_shape = self.Shape("circle", size, color, (int(x), int(y)))
+                new_shape = Shape("circle", size, color, (int(x), int(y)))
                 self.add_to_list(new_shape)
 
         #bulk of the initiation work
@@ -189,7 +189,12 @@ class server:
 
         #list of clients connected to server
         self.client_list = []
-        self.board = self.serverDrawingBoard(self)
+        #self.board = self.serverDrawingBoard(self)
+
+    def handle_received_shape(self, shape_info):
+        command, shape_type, size, color, location = shape_info.split("|")
+        to_add = Shape(shape_type, size, color, location)
+        self.build_shape(to_add)
 
     #basic function to send some "message" to all clients connected to the server
     def broadcast_message(self, message):
@@ -243,7 +248,7 @@ class server:
 
     #function to create server instance and start running
     def start(self):
-        host_ip = '127.0.0.1'
+        host_ip = ''
         port = 5050
 
         try:
