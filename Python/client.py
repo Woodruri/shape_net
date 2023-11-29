@@ -109,8 +109,7 @@ class client:
         self.active_button = self.rec_button
         self.rec_button.bind("<Button-1>", self.build_rec)
         self.circle_button.bind("<Button-1>", self.build_circle)
-        self.can.bind("<Button-1>", self.
-                      pe)
+        self.can.bind("<Button-1>", self.create_shape)
 
     #this is a bitch of a function and I hate it, can't get both the disabling and raising to work
     #they seem to be mutually exclusive
