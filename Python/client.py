@@ -17,7 +17,7 @@ class client:
 
     DEFAULT_COLOR = 'black'
     DEFAULT_SIZE = 25
-    COLUMN_NO = 5
+    COLUMN_NO = 6
 
     def __init__(self):
         #initial everything
@@ -149,7 +149,7 @@ class client:
             elif shape.shapeType == "circle":
                 x, y = shape_tuple
                 r = int(float(shape.size))
-                self.can.create_oval(x - r, y - r, x + r, y + r, fill=shape.color, outline=shape.color)
+                self.can.create_oval(x - (r/2), y - (r/2), x + (r/2), y + (r/2), fill=shape.color, outline=shape.color)
             else:
                 print(f"Unsupported shape type: {shape.shapeType}")
 
