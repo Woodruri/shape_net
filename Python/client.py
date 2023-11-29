@@ -90,7 +90,7 @@ class client:
         if self.active_button == self.rec_button:
             x0, y0 = event.x, event.y
             x1, y1 = x0 + int(size), y0 + int(size)
-            self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
+            #self.can.create_rectangle(x0, y0, x1, y1, fill=color, outline=color)
             new_shape = Shape("rectangle", size, color, (x0,y0))
             self.add_to_list(new_shape)
             self.send_shape_info(new_shape)
@@ -98,7 +98,7 @@ class client:
         #create circle stuff
         elif self.active_button == self.circle_button:
             x, y, r = event.x, event.y, int(size)
-            self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
+            #self.can.create_oval(x - r, y - r, x + r, y + r, fill=color, outline=color)
             new_shape = Shape("circle", size, color, (int(x), int(y)))
             self.add_to_list(new_shape)
             self.send_shape_info(new_shape)
@@ -135,7 +135,6 @@ class client:
     def build_shape(self, shape = Shape()):
         print(f"inside build_shape function, shape = {shape}")
         try:
-            print(type(shape.loc))
             shape_tuple = ast.literal_eval(shape.loc)
 
             if shape.shapeType == "rectangle":
@@ -144,7 +143,7 @@ class client:
                 self.can.create_rectangle(x0, y0, x1, y1, fill=shape.color, outline=shape.color)
             elif shape.shapeType == "circle":
                 x, y = shape_tuple
-                r = int(shape.size)
+                r = int(float(shape.size))
                 self.can.create_oval(x - r, y - r, x + r, y + r, fill=shape.color, outline=shape.color)
             else:
                 print(f"Unsupported shape type: {shape.shapeType}")
