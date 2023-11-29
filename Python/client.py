@@ -68,9 +68,13 @@ class client:
                                     label="shape size", variable=self.size_var)
         self.size_button.grid(row=0, column=3)
 
+        #clear button - functions as the erase
+        self.eraser_button = tk.Button(self.root, text='Erase.', command=self.erase)
+        self.eraser_button.grid(row=0, column=4)
+
         #the close connection button
         self.close_button = tk.Button(self.root, text='close connection', command=self.close_connection)
-        self.close_button.grid(row=0, column=4)
+        self.close_button.grid(row=0, column=5)
 
         #setup and loop stuff
         self.setup()
@@ -109,6 +113,7 @@ class client:
         self.active_button = self.rec_button
         self.rec_button.bind("<Button-1>", self.build_rec)
         self.circle_button.bind("<Button-1>", self.build_circle)
+        self.eraser_button.bind("<Button-1>", self.erase)
         self.can.bind("<Button-1>", self.create_shape)
 
     #this is a bitch of a function and I hate it, can't get both the disabling and raising to work
@@ -154,6 +159,10 @@ class client:
             print(f"Error: {exc} occurred while adding shape: {shape}")
             print(tb.format_exc())
 
+
+    def erase(self, event=None):
+        self.activate_button(self.eraser_button)
+        self.can.delete("all")
 
     def add_to_list(self, shape=Shape()):
         self.shapes.append(shape)
